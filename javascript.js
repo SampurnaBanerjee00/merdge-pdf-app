@@ -368,8 +368,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function previewFile(index) {
         const file = pdfFiles[index];
         const url = URL.createObjectURL(file);
-        document.getElementById('pdfPreview').src = url;
-        document.getElementById('previewModal').style.display = 'block';
+        
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            window.open(url, '_blank');
+            showToast('PDF opened in new tab for preview', 'info');
+            // Revoke the URL after a short delay to allow the new tab to load
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } else {
+            document.getElementById('pdfPreview').src = url;
+            document.getElementById('previewModal').style.display = 'block';
+        }
     }
     
     // Modal event listeners
@@ -378,13 +388,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
-        URL.revokeObjectURL(document.getElementById('pdfPreview').src);
+        const preview = document.getElementById('pdfPreview');
+        if (preview.src) {
+            URL.revokeObjectURL(preview.src);
+            preview.src = '';
+        }
     });
     
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
-            URL.revokeObjectURL(document.getElementById('pdfPreview').src);
+            const preview = document.getElementById('pdfPreview');
+            if (preview.src) {
+                URL.revokeObjectURL(preview.src);
+                preview.src = '';
+            }
         }
     });
     
