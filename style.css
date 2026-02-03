@@ -503,6 +503,8 @@ footer p {
     max-width: 50rem;
     position: relative;
     color: var(--text-primary);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-content h3 {
@@ -528,6 +530,7 @@ footer p {
 #pdfPreview {
     width: 100%;
     border: none;
+    height: 70vh;
     min-height: 400px;
 }
 
