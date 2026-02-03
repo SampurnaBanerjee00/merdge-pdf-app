@@ -525,6 +525,12 @@ footer p {
     color: var(--text-primary);
 }
 
+#pdfPreview {
+    width: 100%;
+    border: none;
+    min-height: 400px;
+}
+
 /* Media Queries - Progressive Enhancement */
 @media (min-width: 480px) { /* Small tablets */
     .controls, .result-actions, .order-controls {
@@ -576,5 +582,8 @@ footer p {
     }
     .modal-content {
         width: 80%;
+    }
+    #pdfPreview {
+        height: 70vh;
     }
 }
