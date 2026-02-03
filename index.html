@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Merger</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-file-pdf"></i> PDF Merger</h1>
+            <p class="subtitle">Merge multiple PDF files into one - completely in your browser</p>
+        </header>
+
+        <main>
+            <div class="app-container">
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <div class="upload-area" id="dropArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag & Drop PDF Files Here</h3>
+                        <p>or click to browse</p>
+                        <input type="file" id="fileInput" accept=".pdf" multiple>
+                        <div class="file-info">
+                            <p>Supports multiple PDF files. Max file size: 10MB each.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="addFilesBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add More Files
+                        </button>
+                        <button id="clearBtn" class="btn btn-secondary">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File List -->
+                <div class="files-section">
+                    <h3><i class="fas fa-list"></i> Selected Files <span id="fileCount">(0 files)</span></h3>
+                    <div class="file-list-grid">
+                        <div class="file-list" id="fileList">
+                            <div class="empty-state">
+                                <i class="fas fa-folder-open"></i>
+                                <p>No files selected yet. Add PDF files to get started.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-controls">
+                        <button id="sortByNameBtn" class="btn btn-small">
+                            <i class="fas fa-sort-alpha-down"></i> Sort by Name
+                        </button>
+                        <button id="reverseOrderBtn" class="btn btn-small">
+                            <i class="fas fa-exchange-alt"></i> Reverse Order
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="options-section">
+                    <h3><i class="fas fa-cog"></i> Merge Options</h3>
+                    
+                    <div class="option-group">
+                        <label for="outputName">
+                            <i class="fas fa-file-signature"></i> Output Filename
+                        </label>
+                        <input type="text" id="outputName" value="merged-document.pdf">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label>
+                            <i class="fas fa-sort-numeric-down"></i> Page Order
+                        </label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="pageOrder" value="sequential" checked>
+                                Sequential (File 1, then File 2, etc.)
+                            </label>
+                            <label>
+                                <input type="radio" name="pageOrder" value="alternate">
+                                Alternate Pages (Page 1 from each file, then page 2, etc.)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="quality">
+                            <i class="fas fa-chart-line"></i> Quality
+                        </label>
+                        <select id="quality">
+                            <option value="high">High (Best quality, larger file)</option>
+                            <option value="medium" selected>Medium (Good balance)</option>
+                            <option value="low">Low (Smaller file, lower quality)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Merge Button -->
+                <div class="merge-section">
+                    <button id="mergeBtn" class="btn btn-merge" disabled>
+                        <i class="fas fa-layer-group"></i> Merge PDF Files
+                    </button>
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="progress-text" id="progressText">0%</div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <h3><i class="fas fa-check-circle"></i> Merge Complete!</h3>
+                    <div class="result-info">
+                        <p id="resultMessage">Your PDF has been successfully merged.</p>
+                        <div class="result-actions">
+                            <a id="downloadLink" class="btn btn-download" download>
+                                <i class="fas fa-download"></i> Download Merged PDF
+                            </a>
+                            <button id="printPreviewBtn" class="btn btn-secondary">
+                                <i class="fas fa-print"></i> Print Preview
+                            </button>
+                            <button id="newMergeBtn" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> New Merge
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>PDF Merger &copy; 2023 | All processing happens in your browser - no files are uploaded to any server.</p>
+            <p class="footer-note">Powered by PDF-Lib.js | <i class="fas fa-shield-alt"></i> 100% Secure & Private</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>PDF Preview</h3>
+            <embed id="pdfPreview" type="application/pdf" width="100%" height="600px">
+        </div>
+    </div>
+
+    <script src="javascript.js"></script>
+</body>
+</html>
