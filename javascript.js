@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
     newMergeBtn.addEventListener('click', resetApp);
     
     document.getElementById('printPreviewBtn').addEventListener('click', () => {
-        window.open(downloadLink.href, '_blank');
+        document.getElementById('pdfPreview').src = downloadLink.href;
+        document.getElementById('previewModal').style.display = 'block';
     });
     
     sortByNameBtn.addEventListener('click', sortFilesByName);
@@ -368,18 +369,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function previewFile(index) {
         const file = pdfFiles[index];
         const url = URL.createObjectURL(file);
-        
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (isMobile) {
-            window.open(url, '_blank');
-            showToast('PDF opened in new tab for preview', 'info');
-            // Revoke the URL after a short delay to allow the new tab to load
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
-        } else {
-            document.getElementById('pdfPreview').src = url;
-            document.getElementById('previewModal').style.display = 'block';
-        }
+        document.getElementById('pdfPreview').src = url;
+        document.getElementById('previewModal').style.display = 'block';
     }
     
     // Modal event listeners
